@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            margin-top: 50px; 
+            background-color: blue; /* تغيير لون الخلفية إلى الأزرق */
+            color: white; /* تغيير لون النص إلى الأبيض لتحسين الرؤية */
+        }
+        input, button { 
+            margin: 10px; 
+            padding: 10px; /* إضافة تباعد داخل الأزرار */
+            font-size: 16px; /* تغيير حجم الخط لتحسين القابلية للقراءة */
+        }
+        #qrcode { 
+            margin-top: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Generator</h1>
+    <input type="text" id="text-input" placeholder="Enter text here">
+    <button onclick="generateQRCode()">Generate QR Code</button>
+    <div id="qrcode"></div>
+    <button id="download-btn" style="display: none;">Download QR Code</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            const text = document.getElementById('text-input').value;
+            const qrcodeContainer = document.getElementById('qrcode');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            qrcodeContainer.innerHTML = ''; // Clear previous QR code
+            QRCode.toCanvas(text, function (error, canvas) {
+                if (error) console.error(error);
+                qrcodeContainer.appendChild(canvas);
+                downloadBtn.style.display = 'block';
+                downloadBtn.onclick = function () {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'qrcode.png';
+                    link.click();
+                };
+            });
+        }
+    </script>
+</body>
+</html>
